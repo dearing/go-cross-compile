@@ -37,27 +37,29 @@ dir build
 ## usage
 
 ```
-Usage: go-cross-compile [options]
+Usage: [go tool] go-cross-compile [options]
 This tool was inspired from the tedious task of cross compiling go binaries and
-then uploading them to github. The md5, sha1, sha256, sha512, and zip options
-are available for each artifact of the build and you end up with the following:
+hash sums. The md5, sha1, sha256, sha512 and zip options are available for each
+artifact of the operation.
 
-  $outDir/$name per artifact member of artifacts in the config
-  $outDir/$name$hash.txt for each of md5, sha1, sha256 or sha512 when enabled
-  $outDir/$name.zip if zipFile when enabled
+  - $outDir/$name per artifact member of artifacts defined in the config
+  - $outDir/$name.$mode.txt for each of md5, sha1, sha256 or sha512 when enabled
+  - $outDir/$name.zip containing the artifact per build when enabled
 
 Workflow:
 
   1. generate a new config file with 'go-cross-compile --init-config'
   2. edit the config file 'go-cross-compile.json' to your liking
   3. create the outDir ex: 'mkdir build' (this is a kind of safety check)
-  4. run 'go-cross-compile --config-file go-cross-compile.json' to do work
+  4. run 'go-cross-compile --config-file go-cross-compile.json' to have Go build
+         the artifacts and create the hash sums and zip files
 
 Tips:
   - 'go tool dist list' will show the valid GOOS and GOARCH values
-  - the zipFile will contain the binary at the root of the tree
-  - the hash sum text file are compatible with the gnu hash utility suite
+  - the zip files will contain the artifact at the root of the tree
+  - the hash sum text files are compatible with the gnu core text utilities
   - the argument --version will emit debug metadata of the tool itself
+  - the tool will exit with a non-zero status on error
 
 Options:
   -config-file string
