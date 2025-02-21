@@ -2,7 +2,7 @@
 
 simple go tool to cross-compile binaries, hash sums and archives for publishing
 
-This tool doesn't rely anything outside of the standard library, the hashing and compression are handled internally. This keeps the tool nimble and cross platform meaning we don't need to rely on build environments prepopulated with packages (aside from Go itself).
+This tool doesn't rely anything outside of the standard library, the hashing and compression are handled internally. This keeps the tool nimble and cross platform meaning we don't need to rely on build environments prepopulated with packages (aside from Go itself). You can customize each build with additional flags and CGO_ENABLED environment variable as needed, see the example config below.
 
 ## global install
 
