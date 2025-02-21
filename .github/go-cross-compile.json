@@ -27,11 +27,7 @@
     {
       "name": "go-cross-compile-linux-amd64-cover",
       "os": "linux",
-      "arch": "amd64",
-      "flags": [
-        "-cover",
-        "-race"
-      ]
+      "arch": "amd64"
     },
     {
       "name": "go-cross-compile-linux-arm64",
