@@ -26,7 +26,7 @@ then uploading them to github. The md5, sha1, sha256, sha512, and zip options
 are available for each artifact of the build and you end up with the following:
 
   $outDir/$name per artifact member of artifacts in the config
-  $outDir/$name$hash.txt for each of md5, sha1, sha256, or sha512 when enabled
+  $outDir/$name$hash.txt for each of md5, sha1, sha256 or sha512 when enabled
   $outDir/$name.zip if zipFile when enabled
 
 Workflow:
