@@ -81,12 +81,12 @@ func run() int {
 		}
 
 		// add some common build targets
-		config.AddBuild(name+"-darwin-amd64", "darwin", "amd64")
-		config.AddBuild(name+"-darwin-arm64", "darwin", "arm64")
-		config.AddBuild(name+"-linux-amd64", "linux", "amd64")
-		config.AddBuild(name+"-linux-arm64", "linux", "arm64")
-		config.AddBuild(name+"-windows-amd64.exe", "windows", "amd64")
-		config.AddBuild(name+"-windows-arm64.exe", "windows", "arm64")
+		config.AddBuild(name+"-darwin-amd64", "darwin", "amd64", false)
+		config.AddBuild(name+"-darwin-arm64", "darwin", "arm64", false)
+		config.AddBuild(name+"-linux-arm64", "linux", "arm64", false)
+		config.AddBuild(name+"-linux-arm64-cover", "linux", "amd64", true, "-cover", "-race")
+		config.AddBuild(name+"-windows-amd64.exe", "windows", "amd64", false)
+		config.AddBuild(name+"-windows-arm64.exe", "windows", "arm64", false)
 
 		// clobber a config file for the user with defaults
 		err = config.Save(*argConfigFile)

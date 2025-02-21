@@ -10,17 +10,28 @@
     {
       "name": "go-cross-compile-darwin-amd64",
       "os": "darwin",
-      "arch": "amd64"
+      "arch": "amd64",
+      "cgoEnabled": true
     },
     {
       "name": "go-cross-compile-darwin-arm64",
       "os": "darwin",
-      "arch": "arm64"
+      "arch": "arm64",
+      "cgoEnabled": false
     },
     {
       "name": "go-cross-compile-linux-amd64",
       "os": "linux",
       "arch": "amd64"
+    },
+    {
+      "name": "go-cross-compile-linux-amd64-cover",
+      "os": "linux",
+      "arch": "amd64",
+      "flags": [
+        "-cover",
+        "-race"
+      ]
     },
     {
       "name": "go-cross-compile-linux-arm64",

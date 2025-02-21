@@ -38,8 +38,15 @@ func NewConfig() *Config {
 // AddBuild adds a build target group for Go binaries.
 //
 //	ex: myconfig.AddBuild("example.exe", "windows", "amd64")
-func (c *Config) AddBuild(name, os, arch string) {
-	c.Artifacts = append(c.Artifacts, Artifact{Name: name, OS: os, ARCH: arch})
+func (c *Config) AddBuild(name, os, arch string, cgo bool, flags ...string) {
+	c.Artifacts = append(c.Artifacts,
+		Artifact{
+			Name:       name,
+			OS:         os,
+			ARCH:       arch,
+			CGOEnabled: cgo,
+			Flags:      flags,
+		})
 }
 
 // Save saves a json representation of Config to filename

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"hash"
 	"io"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path"
@@ -13,9 +14,12 @@ import (
 
 // Artifact defines a build target for Go binaries.
 type Artifact struct {
-	Name string `json:"name"`
-	OS   string `json:"os"`
-	ARCH string `json:"arch"`
+	Name       string `json:"name"`
+	OS         string `json:"os"`
+	ARCH       string `json:"arch"`
+	CGOEnabled bool   `json:"cgoEnabled,omitzero"`
+
+	Flags []string `json:"flags,omitzero"`
 }
 
 // Build calls `go build` on the artifact in the srcDir and writes the output to outDir.
@@ -25,12 +29,26 @@ func (a *Artifact) Build(srcDir, outDir string) error {
 
 	target := path.Join(outDir, a.Name)
 
-	cmd := exec.Command("go", "build", "-o", target)
+	// setup the base build flags of output and target
+	flags := []string{"build", "-o", target}
+
+	// append any additional flags to the build command
+	flags = append(flags, a.Flags...)
+
+	// create the build command unrolling our flags
+	cmd := exec.Command("go", flags...)
 	cmd.Dir = srcDir
 	cmd.Env = append(os.Environ(),
 		"GOOS="+a.OS,
 		"GOARCH="+a.ARCH,
 	)
+
+	// if cgo is enabled, set the env var
+	if a.CGOEnabled {
+		cmd.Env = append(cmd.Env, "CGO_ENABLED=1")
+	}
+
+	slog.Info("executing", "GOOS", a.OS, "GOARCH", a.ARCH, "CGO_ENABLED", a.CGOEnabled, "cmd", cmd.String())
 
 	err := cmd.Run()
 	if err != nil {
