@@ -30,7 +30,8 @@ uninstall => go get -tool github.com/dearing/go-cross-compile@none
 git clone https://github.com/dearing/go-cross-compile.git
 cd go-cross-compile
 mkdir build
-go tool go-cross-compile --config-file .github/go-cross-compile.json
+go tool go-cross-compile --init-config
+go tool go-cross-compile --config-file go-cross-compile.json
 dir build
 ```
 ---
