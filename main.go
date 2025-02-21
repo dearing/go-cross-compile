@@ -146,7 +146,7 @@ func work() int {
 
 			// md5 if requested
 			if config.MD5 {
-				sumFile := fmt.Sprintf("%s.%s.txt", binary.Name, "md5")
+				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "md5")
 				err := binary.CreateSumFile(md5.New(), artifact, sumFile)
 				if err != nil {
 					slog.Error("error creating md5", "error", err)
@@ -169,7 +169,7 @@ func work() int {
 
 			// sha256 if requested
 			if config.SHA256 {
-				sumFile := fmt.Sprintf("%s.%s.txt", binary.Name, "sha256")
+				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha256")
 				err := binary.CreateSumFile(sha256.New(), artifact, sumFile)
 				if err != nil {
 					slog.Error("error creating sha256", "error", err)
@@ -181,7 +181,7 @@ func work() int {
 
 			// sha512 if requested
 			if config.SHA512 {
-				sumFile := fmt.Sprintf("%s.%s.txt", binary.Name, "sha512")
+				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha512")
 				err := binary.CreateSumFile(sha512.New(), artifact, sumFile)
 				if err != nil {
 					slog.Error("error creating sha512", "error", err)
