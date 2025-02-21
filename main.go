@@ -130,8 +130,6 @@ func work() int {
 		// iterate over the binaries and call their build function
 		for _, binary := range config.Artifacts {
 
-			slog.Info("building", "binary", binary.Name, "os", binary.OS, "arch", binary.ARCH)
-
 			// clock the build time
 			start := time.Now()
 
@@ -141,6 +139,7 @@ func work() int {
 				slog.Error("error building binary", "error", err)
 				return ErrorGoBuild
 			}
+
 			slog.Info("built", "binary", binary.Name, "duration", time.Since(start))
 
 			artifact := fmt.Sprintf("%s/%s", config.OutDir, binary.Name)
@@ -153,6 +152,7 @@ func work() int {
 					slog.Error("error creating md5", "error", err)
 					return ErrorMD5SumFile
 				}
+
 				slog.Info("created md5", "sum-file", sumFile)
 			}
 
@@ -200,6 +200,7 @@ func work() int {
 					slog.Error("error creating zip", "error", err)
 					return ErrorZipFile
 				}
+
 				slog.Info("created zip", "zip-file", zipFile)
 			}
 		}
