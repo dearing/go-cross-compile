@@ -25,7 +25,7 @@ go tool go-cross-compile
 downgrade => go get -tool github.com/dearing/go-cross-compile@v1.0.0
 uninstall => go get -tool github.com/dearing/go-cross-compile@none
 ```
-## 30 second demo
+## 30 second test drive
 ```
 git clone https://github.com/dearing/go-cross-compile.git
 cd go-cross-compile
