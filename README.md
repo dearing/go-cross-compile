@@ -79,7 +79,7 @@ Options:
   "sha1": true,
   "sha256": false,
   "sha512": false,
-  "zipFile": false,
+  "zipFile": true,
   "artifacts": [
     {
       "name": "go-cross-compile-darwin-amd64",
@@ -99,16 +99,28 @@ Options:
     {
       "name": "go-cross-compile-linux-amd64",
       "os": "linux",
+      "arch": "amd64"
+    },
+    {
+      "name": "go-cross-compile-linux-amd64-stripped",
+      "os": "linux",
       "arch": "amd64",
-      "cgoEnabled": true,
       "flags": [
-        "-race"
+        "-ldflags=-s -w"
       ]
     },
     {
       "name": "go-cross-compile-windows-amd64.exe",
       "os": "windows",
       "arch": "amd64"
+    },
+    {
+      "name": "go-cross-compile-windows-amd64-stripped.exe",
+      "os": "windows",
+      "arch": "amd64",
+      "flags": [
+        "-ldflags=-s -w"
+      ]
     },
     {
       "name": "go-cross-compile-windows-arm64.exe",
