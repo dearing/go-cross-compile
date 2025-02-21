@@ -30,7 +30,7 @@ func NewConfig() *Config {
 		SHA1:      true,
 		SHA256:    false,
 		SHA512:    false,
-		ZipFile:   false,
+		ZipFile:   true,
 		Artifacts: []Artifact{},
 	}
 }

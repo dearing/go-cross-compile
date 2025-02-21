@@ -85,8 +85,9 @@ func run() int {
 		config.AddBuild(name+"-darwin-arm64", "darwin", "arm64", false)
 		config.AddBuild(name+"-linux-arm64", "linux", "arm64", false)
 		config.AddBuild(name+"-linux-amd64", "linux", "amd64", false)
-		config.AddBuild(name+"-linux-amd64-asan", "linux", "amd64", false, "-asan")
+		config.AddBuild(name+"-linux-amd64-stripped", "linux", "amd64", false, "-ldflags=-s -w")
 		config.AddBuild(name+"-windows-amd64.exe", "windows", "amd64", false)
+		config.AddBuild(name+"-windows-amd64-stripped.exe", "windows", "amd64", false, "-ldflags=-s -w")
 		config.AddBuild(name+"-windows-arm64.exe", "windows", "arm64", false)
 
 		// clobber a config file for the user with defaults

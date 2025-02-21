@@ -10,14 +10,12 @@
     {
       "name": "go-cross-compile-darwin-amd64",
       "os": "darwin",
-      "arch": "amd64",
-      "cgoEnabled": true
+      "arch": "amd64"
     },
     {
       "name": "go-cross-compile-darwin-arm64",
       "os": "darwin",
-      "arch": "arm64",
-      "cgoEnabled": false
+      "arch": "arm64"
     },
     {
       "name": "go-cross-compile-linux-amd64",
