@@ -138,7 +138,7 @@ func work() int {
 			err := binary.Build(config.SrcDir, config.OutDir)
 			if err != nil {
 				slog.Error("error building binary", "error", err)
-				continue
+				return ErrorGoBuild
 			}
 			slog.Info("built", "binary", binary.Name, "duration", time.Since(start))
 
