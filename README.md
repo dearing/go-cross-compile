@@ -10,7 +10,7 @@ This tool doesn't rely anything outside of the standard library, the hashing and
 go install github.com/dearing/go-cross-compile
 ```
 >[!NOTE]
->With Go 1.24+, we can use the tool feature to pin the tool in go.mod instead of installing it in the host's path
+>if your project is Go 1.24+, you can pin the tool to your module workspace instead of installing it in the host's path
 ## go tool usage
 ```
 go get -tool github.com/dearing/go-cross-compile@latest
