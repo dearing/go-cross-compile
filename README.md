@@ -43,6 +43,7 @@ Workflow:
   4. run 'go-cross-compile --config-file go-cross-compile.json' to do work
 
 Tips:
+  - 'go tool dist list' will show the valid GOOS and GOARCH values
   - zipFile will contain on the binary at the root of the tree
   - the hash files are in the format of the *nix hash utilities
   - the argument --version will emit debug metadata of the tool itself
