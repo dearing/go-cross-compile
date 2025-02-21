@@ -91,14 +91,19 @@ Options:
       "arch": "arm64"
     },
     {
-      "name": "go-cross-compile-linux-amd64",
-      "os": "linux",
-      "arch": "amd64"
-    },
-    {
       "name": "go-cross-compile-linux-arm64",
       "os": "linux",
       "arch": "arm64"
+    },
+    {
+      "name": "go-cross-compile-linux-arm64-cover",
+      "os": "linux",
+      "arch": "amd64",
+      "cgoEnabled": true,
+      "flags": [
+        "-cover",
+        "-race"
+      ]
     },
     {
       "name": "go-cross-compile-windows-amd64.exe",
