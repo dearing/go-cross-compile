@@ -26,6 +26,8 @@ downgrade => go get -tool github.com/dearing/go-cross-compile@v1.0.0
 uninstall => go get -tool github.com/dearing/go-cross-compile@none
 ```
 ## 30 second test drive
+
+This project has itself defined as a tool, so as a test drive you can download the project and call the tool to generate a default config and execute without any other preperation.
 ```
 git clone https://github.com/dearing/go-cross-compile.git
 cd go-cross-compile
