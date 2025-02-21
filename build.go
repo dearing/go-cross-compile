@@ -46,9 +46,10 @@ func (a *Artifact) Build(srcDir, outDir string) error {
 	// if cgo is enabled, set the env var
 	if a.CGOEnabled {
 		cmd.Env = append(cmd.Env, "CGO_ENABLED=1")
+		slog.Info("executing", "GOOS", a.OS, "GOARCH", a.ARCH, "CGO_ENABLED", a.CGOEnabled, "cmd", cmd.String())
+	} else {
+		slog.Info("executing", "GOOS", a.OS, "GOARCH", a.ARCH, "cmd", cmd.String())
 	}
-
-	slog.Info("executing", "GOOS", a.OS, "GOARCH", a.ARCH, "CGO_ENABLED", a.CGOEnabled, "cmd", cmd.String())
 
 	err := cmd.Run()
 	if err != nil {
