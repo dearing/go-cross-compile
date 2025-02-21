@@ -16,7 +16,7 @@ go install github.com/dearing/go-cross-compile
 go get -tool github.com/dearing/go-cross-compile@latest
 go tool go-cross-compile --version
 go tool go-cross-compile --init-config
-go tool go-cross-compile --config-file go-cross-compile.json
+go tool go-cross-compile
 ```
 ## tool maintenance tips
 ```
