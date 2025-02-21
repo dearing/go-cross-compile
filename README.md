@@ -5,14 +5,22 @@ simple go tool to cross-compile binaries, hash sums and archives for publishing
 This tool doesn't include anything outside of the standard library to keep it nimble and only shell's out to call Go for builds, the hashing and compression is handled internally. This keeps the tool small and cross platform meaning we don't need to rely on build environments prepopulated with packages (aside from Go).
 
 ## install
+
 ```
 go install github.com/dearing/go-cross-compile
 ```
 >[!TIP]
->With Go 1.24+, we can use the tool feature to pin the tool in go.mod
+>With Go 1.24+, we can use the tool feature to pin the tool in go.mod install of installing it globally as above
 ```
-go get -tool github.com/dearing/go-cross-compile
+go get -tool github.com/dearing/go-cross-compile@latest
 go tool go-cross-compile --version
+go tool go-cross-compile --init-config
+go tool go-cross-compile --config-file go-cross-compile.json
+```
+
+## tool uninstall
+```
+go get -tool github.com/dearing/go-cross-compile@none
 ```
 ---
 ## usage
