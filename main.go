@@ -84,7 +84,8 @@ func run() int {
 		config.AddBuild(name+"-darwin-amd64", "darwin", "amd64", false)
 		config.AddBuild(name+"-darwin-arm64", "darwin", "arm64", false)
 		config.AddBuild(name+"-linux-arm64", "linux", "arm64", false)
-		config.AddBuild(name+"-linux-amd64", "linux", "amd64", true, "-race")
+		config.AddBuild(name+"-linux-amd64", "linux", "amd64", false)
+		config.AddBuild(name+"-linux-amd64-asan", "linux", "amd64", false, "-asan")
 		config.AddBuild(name+"-windows-amd64.exe", "windows", "amd64", false)
 		config.AddBuild(name+"-windows-arm64.exe", "windows", "arm64", false)
 
