@@ -66,8 +66,6 @@ Options:
         config file to use (default "go-cross-compile.json")
   -init-config
         initialize a new config file and exit
-  -skip-build
-        skip the build step
   -version
         emit version and build info and exit
 ```

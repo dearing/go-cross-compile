@@ -16,7 +16,6 @@ import (
 
 var argConfigFile = flag.String("config-file", "go-cross-compile.json", "config file to use")
 var argInitConfig = flag.Bool("init-config", false, "initialize a new config file and exit")
-var argSkipBuild = flag.Bool("skip-build", false, "skip the build step")
 var argVersion = flag.Bool("version", false, "emit version and build info and exit")
 
 func usage() {
@@ -120,91 +119,83 @@ func work() int {
 	// clock the overall operation until the end
 	startOperation := time.Now()
 
-	// TODO: this still feels clunky
-	if *argSkipBuild {
+	slog.Info("calling go build", "src-dir", config.SrcDir, "outDir", config.OutDir)
 
-		slog.Info("skipping build step")
+	// iterate over the binaries and call their build function
+	for _, binary := range config.Artifacts {
 
-	} else {
+		// clock the build time
+		start := time.Now()
 
-		slog.Info("building binaries", "src-dir", config.SrcDir, "outDir", config.OutDir)
+		// build the binary
+		err := binary.Build(config.SrcDir, config.OutDir)
+		if err != nil {
+			slog.Error("error building binary", "error", err)
+			return ErrorGoBuild
+		}
 
-		// iterate over the binaries and call their build function
-		for _, binary := range config.Artifacts {
+		slog.Info("built", "binary", binary.Name, "duration", time.Since(start))
 
-			// clock the build time
-			start := time.Now()
+		artifact := fmt.Sprintf("%s/%s", config.OutDir, binary.Name)
 
-			// build the binary
-			err := binary.Build(config.SrcDir, config.OutDir)
+		// md5 if requested
+		if config.MD5 {
+			sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "md5")
+			err := binary.CreateSumFile(md5.New(), artifact, sumFile)
 			if err != nil {
-				slog.Error("error building binary", "error", err)
-				return ErrorGoBuild
+				slog.Error("error creating md5", "error", err)
+				return ErrorMD5SumFile
 			}
 
-			slog.Info("built", "binary", binary.Name, "duration", time.Since(start))
+			slog.Info("created md5", "sum-file", sumFile)
+		}
 
-			artifact := fmt.Sprintf("%s/%s", config.OutDir, binary.Name)
-
-			// md5 if requested
-			if config.MD5 {
-				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "md5")
-				err := binary.CreateSumFile(md5.New(), artifact, sumFile)
-				if err != nil {
-					slog.Error("error creating md5", "error", err)
-					return ErrorMD5SumFile
-				}
-
-				slog.Info("created md5", "sum-file", sumFile)
+		// sha1 if requested
+		if config.SHA1 {
+			sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha1")
+			err := binary.CreateSumFile(sha1.New(), artifact, sumFile)
+			if err != nil {
+				slog.Error("error creating sha1", "error", err)
+				return ErrorSHA1SumFile
 			}
 
-			// sha1 if requested
-			if config.SHA1 {
-				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha1")
-				err := binary.CreateSumFile(sha1.New(), artifact, sumFile)
-				if err != nil {
-					slog.Error("error creating sha1", "error", err)
-					return ErrorSHA1SumFile
-				}
+			slog.Info("created sha1", "sum-file", sumFile)
+		}
 
-				slog.Info("created sha1", "sum-file", sumFile)
+		// sha256 if requested
+		if config.SHA256 {
+			sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha256")
+			err := binary.CreateSumFile(sha256.New(), artifact, sumFile)
+			if err != nil {
+				slog.Error("error creating sha256", "error", err)
+				return ErrorSHA256SumFile
 			}
 
-			// sha256 if requested
-			if config.SHA256 {
-				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha256")
-				err := binary.CreateSumFile(sha256.New(), artifact, sumFile)
-				if err != nil {
-					slog.Error("error creating sha256", "error", err)
-					return ErrorSHA256SumFile
-				}
+			slog.Info("created sha256", "sum-file", sumFile)
+		}
 
-				slog.Info("created sha256", "sum-file", sumFile)
+		// sha512 if requested
+		if config.SHA512 {
+			sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha512")
+			err := binary.CreateSumFile(sha512.New(), artifact, sumFile)
+			if err != nil {
+				slog.Error("error creating sha512", "error", err)
+				return ErrorSHA512SumFile
 			}
 
-			// sha512 if requested
-			if config.SHA512 {
-				sumFile := fmt.Sprintf("%s/%s.%s.txt", config.OutDir, binary.Name, "sha512")
-				err := binary.CreateSumFile(sha512.New(), artifact, sumFile)
-				if err != nil {
-					slog.Error("error creating sha512", "error", err)
-					return ErrorSHA512SumFile
-				}
+			slog.Info("created sha512", "sum-file", sumFile)
+		}
 
-				slog.Info("created sha512", "sum-file", sumFile)
+		// zip if requested
+		if config.ZipFile {
+			zipFile := fmt.Sprintf("%s/%s.zip", config.OutDir, binary.Name)
+			err := binary.CreatZipFile(artifact, zipFile)
+			if err != nil {
+				slog.Error("error creating zip", "error", err)
+				return ErrorZipFile
 			}
 
-			// zip if requested
-			if config.ZipFile {
-				zipFile := fmt.Sprintf("%s/%s.zip", config.OutDir, binary.Name)
-				err := binary.CreatZipFile(artifact, zipFile)
-				if err != nil {
-					slog.Error("error creating zip", "error", err)
-					return ErrorZipFile
-				}
-
-				slog.Info("created zip", "zip-file", zipFile)
-			}
+			slog.Info("created zip", "zip-file", zipFile)
 		}
 	}
 
