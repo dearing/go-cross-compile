@@ -96,12 +96,11 @@ Options:
       "arch": "arm64"
     },
     {
-      "name": "go-cross-compile-linux-arm64-cover",
+      "name": "go-cross-compile-linux-amd64",
       "os": "linux",
       "arch": "amd64",
       "cgoEnabled": true,
       "flags": [
-        "-cover",
         "-race"
       ]
     },
