@@ -45,7 +45,7 @@ func (a *Artifact) Build(srcDir, outDir string) error {
 //	ex: err := bin.CreateSumFile(sha256.New(), artifact, "example.sha256.txt")
 func (b *Artifact) CreateSumFile(h hash.Hash, artifact, filename string) error {
 
-	// open the binary file
+	// open the artifact binary
 	file, err := os.Open(artifact)
 	if err != nil {
 		return fmt.Errorf("error opening artifact %s: %w", artifact, err)
@@ -57,14 +57,14 @@ func (b *Artifact) CreateSumFile(h hash.Hash, artifact, filename string) error {
 		return fmt.Errorf("error hashing file %s: %w", artifact, err)
 	}
 
-	// flush out the hash
+	// flush out a sum of the file
 	sum := h.Sum(nil)
 
-	// follow the format the *nix hash utilities use
-	content := fmt.Sprintf("%x %s\n", sum, b.Name)
+	// follow the format the gnu core text/utilities use; eg: 'abc123 myfile'
+	record := fmt.Sprintf("%x %s\n", sum, b.Name) // we use the name, not the location
 
-	// write the hash file
-	err = os.WriteFile(filename, []byte(content), 0644)
+	// write the line record to our sum file
+	err = os.WriteFile(filename, []byte(record), 0644)
 	if err != nil {
 		return fmt.Errorf("error writing sum file %s: %w", filename, err)
 	}
@@ -72,10 +72,10 @@ func (b *Artifact) CreateSumFile(h hash.Hash, artifact, filename string) error {
 	return nil
 }
 
-// CreatZipFile creates a zip file as the filename with the contents of artifact.
+// CreatZipFile creates a zip archive as filename with the contents of artifact.
 //
 // The artifact that is added to the zip will be at the root
-// so that it can be unzipped and run from one dir.
+// so that it can be unzipped and run from the same directory.
 //
 //	ex: err := bin.CreatZipFile("build/example.exe", "example.zip")
 func (b *Artifact) CreatZipFile(artifact, filename string) error {
@@ -87,25 +87,32 @@ func (b *Artifact) CreatZipFile(artifact, filename string) error {
 	}
 	defer zipFile.Close()
 
-	// create a new zip writer
+	// create a new zip writer for the zip file
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
 
-	// open the artifact file
-	fileToZip, err := os.Open(artifact)
+	// open the artifact file as data
+	artifactData, err := os.Open(artifact)
 	if err != nil {
 		return fmt.Errorf("error opening artifact %s: %w", artifact, err)
 	}
-	defer fileToZip.Close()
+	defer artifactData.Close()
 
-	// create a new zip entry as the basename of the artifact
-	w, err := zipWriter.Create(filepath.Base(artifact))
+	// create a new zip header for the artifact
+	header := &zip.FileHeader{
+		Name:   filepath.Base(artifact),
+		Method: zip.Deflate,
+	}
+	header.SetMode(0755) // make the artifact executable for unix-likes
+
+	// create a new zip entry for the artifact using our header
+	artifactEntry, err := zipWriter.CreateHeader(header)
 	if err != nil {
 		return fmt.Errorf("error creating zip entry %s: %w", artifact, err)
 	}
 
 	// copy the artifact to the zip entry
-	if _, err := io.Copy(w, fileToZip); err != nil {
+	if _, err := io.Copy(artifactEntry, artifactData); err != nil {
 		return fmt.Errorf("error copying artifact to zip %s: %w", artifact, err)
 	}
 
