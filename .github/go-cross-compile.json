@@ -1,11 +1,11 @@
 {
   "outDir": "build",
   "srcDir": ".",
-  "md5": false,
+  "md5": true,
   "sha1": true,
-  "sha256": false,
-  "sha512": false,
-  "zipFile": false,
+  "sha256": true,
+  "sha512": true,
+  "zipFile": true,
   "artifacts": [
     {
       "name": "go-cross-compile-darwin-amd64",
